@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html<%= config.language ? " lang=" + config.language.substring(0, 2) : ""%>>
+<head>
+    <meta charset="utf-8">
+    <%
+        function capitalize (str) { return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase() }
+        var title = page.title;
+        if (is_archive()) {
+            title = capitalize(__('index.archive'));
+            if (is_month()) {
+                title += ': ' + page.year + '/' + page.month;
+            } else if (is_year()) {
+                title += ': ' + page.year;
+            }
+        } else if (is_category()) {
+            title = capitalize(__('index.category')) + ': ' + page.category;
+        } else if (is_tag()) {
+            title = capitalize(__('index.tag')) + ': ' + page.tag;
+        }
+    %>
+    <title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <%- open_graph({
+        image:          thumbnail(page),
+        fb_app_id:      theme.miscellaneous.open_graph.fb_app_id,
+        fb_admins:      theme.miscellaneous.open_graph.fb_admins,
+        twitter_id:     theme.miscellaneous.open_graph.twitter_id,
+        google_plus:    theme.miscellaneous.open_graph.google_plus,
+    }) %>
+    <%- meta(page) %>
+
+    <% if (theme.customize && theme.customize.social_links && theme.customize.social_links.rss) { %>
+        <link rel="alternate" href="<%- theme.customize.social_links.rss %>" title="<%= config.title %>" type="application/atom+xml" />
+    <% } %>
+
+    <% if (theme.customize.favicon) { %>
+        <link rel="icon" href="<%- url_for(theme.customize.favicon) %>" />
+    <% } %>
+
+    <%- css('vendor/font-awesome/css/font-awesome.min') %>
+    <%- css('vendor/open-sans/styles') %>
+    <%- css('vendor/source-code-pro/styles') %>
+
+    <%- css('css/style') %>
+
+    <%- js('vendor/jquery/2.1.3/jquery.min') %>
+    <%- partial('plugin/scripts', { isHead: true }) %>
+  <!-- MailerLite Universal -->
+    <script>
+    (function(m,a,i,l,e,r){m['MailerLiteObject']=e;function f(){
+    var c={a:arguments,q:[]};var r=this.push(c);return "number"!=typeof r?r:f.bind(c.q);}
+    f.q=f.q||[];m[e]=m[e]||f.bind(f.q);m[e].q=f.q;r=a.createElement(i);
+    var _=a.getElementsByTagName(i)[0];r.async=1;r.src=l;_.parentNode.insertBefore(r,_);
+    })(window, document, 'script', 'https://static.mailerlite.com/js/universal.js', 'ml');
+
+    ml('accounts', '546941', 'f5s1r0r7z8', 'load');
+    </script>
+  <!-- End MailerLite Universal -->
+  <!-- Início google adsense page-level ad -->
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9858112533656607",
+    enable_page_level_ads: true
+  });
+</script>
+<!-- término google adsense page-level ad -->
+</head>
